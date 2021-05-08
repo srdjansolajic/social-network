@@ -1,8 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import data from './data.json';
+import { Info } from './components/Info';
+
+const App = () => {
+  const [friends, setFriends] = useState([]);
+  const [friendsOfFriends, setFriendsOfFriends] = useState('');
+
+  let tmp = data.map(el => {
+    return {
+      ...el,
+      showFriends: false,
+    };
+  });
+
+  return (
+    <>
+      {tmp.map(el => (
+        <Info
+          key={el.id}
+          item={el}
+          tmp={tmp}
+          setFriends={setFriends}
+          friendsOfFriends={friendsOfFriends}
+          setFriendsOfFriends={setFriendsOfFriends}
+        />
+      ))}
+    </>
+  );
+};
 
 ReactDOM.render(
   <React.StrictMode>
@@ -10,8 +36,3 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
