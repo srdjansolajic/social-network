@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './info.css';
 
 export const Info = ({
@@ -8,6 +8,8 @@ export const Info = ({
   setFriends,
   setFriendsOfFriends,
 }) => {
+  const [suggestedFriend, setSuggestedFriend] = useState('');
+
   const friendsShow = id => {
     tmp.forEach(el => {
       if (el.id === +id) {
@@ -25,6 +27,7 @@ export const Info = ({
   };
 
   const takeFriends = id => {
+    console.log(id);
     let name = [];
     id.filter(element => {
       return tmp.map(el => {
@@ -33,6 +36,7 @@ export const Info = ({
         }
       });
     });
+    console.log(name);
     name = name.join(', ');
     return name;
   };
@@ -54,8 +58,27 @@ export const Info = ({
         }
       });
     });
+
     let allFriends = [...new Set(name)];
     setFriendsOfFriends(allFriends.join(', '));
+
+    let people = [];
+    const suggestedFriends = [
+      ...new Set(friends.filter((e, i, a) => a.indexOf(e) !== i)),
+    ];
+    suggestedFriends.filter(element => {
+      return tmp.map(el => {
+        if (element === el.id) {
+          people.push(el.firstName);
+        }
+      });
+    });
+    setSuggestedFriend(people.join(', '));
+
+    console.log(allFriends);
+    console.log(people);
+    console.log(tmp[6].friends);
+    console.log(name);
   };
 
   return (
@@ -91,6 +114,11 @@ export const Info = ({
       </p>
       <p id={item.firstName} className="hidden">
         {friendsOfFriends}
+      </p>
+      <p>
+        <span>Suggested Friends:</span>
+        <br />
+        {suggestedFriend}
       </p>
     </div>
   );
